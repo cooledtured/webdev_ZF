@@ -1,0 +1,55 @@
+---
+// SidebarAds
+// Drop-in widget that renders three "ad" image blocks. When the manager
+// provides the images, put them under /public/ads/ and update the
+// `src` / `href` pairs below. No other code needs to change.
+
+interface Ad {
+  href: string;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+const ads: Ad[] = [
+  {
+    href: "https://cooledtured.com",
+    src: "/ads/GSC_Yaoi.gif",
+    alt: "Cooledtured",
+    width: 320,
+    height: 300,
+  },
+  {
+    href: "https://cooledtured.com",
+    src: "/ads/GROWYOURCOLLECTION.gif",
+    alt: "Cooledtured banner",
+    width: 277,
+    height: 79,
+  },
+  {
+    href: "https://www.instagram.com/zealedfujoshi/",
+    src: "/ads/place your ad here.gif",
+    alt: "Follow Zealed Fujoshi on Instagram",
+    width: 277,
+    height: 66,
+  },
+];
+---
+
+<div class="box">
+  <div class="box-title">Sponsored</div>
+  {ads.map((ad) => (
+    <div class="ad-widget">
+      <a href={ad.href} target="_blank" rel="noopener sponsored">
+        <img
+          src={ad.src}
+          alt={ad.alt}
+          width={ad.width}
+          height={ad.height}
+          loading="lazy"
+        />
+      </a>
+    </div>
+  ))}
+</div>

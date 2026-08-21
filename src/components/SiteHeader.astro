@@ -1,0 +1,47 @@
+---
+// Top header bar with the site logo on the left and social icons on the right.
+// Lives at the very top of every page, above the marquee.
+
+interface SocialLink {
+  name: string;
+  href: string;
+  title: string;
+}
+
+const socials: SocialLink[] = [
+  { name: "facebook",  href: "https://www.facebook.com/zealedfujoshi", title: "facebook" },
+  { name: "twitter",   href: "https://twitter.com/zealedfujoshi",      title: "twitter" },
+  { name: "instagram", href: "https://www.instagram.com/zealedfujoshi", title: "instagram" },
+  { name: "youtube",   href: "https://www.youtube.com/c/ZealedFujoshi", title: "youtube" },
+  { name: "tumblr",    href: "https://zealedfujoshi.tumblr.com/",       title: "tumblr" },
+  { name: "twitch",    href: "https://twitch.tv/zealedfujoshi",        title: "twitch" },
+  { name: "email",     href: "mailto:zealedfujoshi@gmail.com",         title: "email" },
+];
+
+// Map network names to their Font Awesome v6 class names
+const iconMap: Record<string, string> = {
+  facebook: "fa-brands fa-facebook",
+  twitter: "fa-brands fa-x-twitter", // Updated to Font Awesome v6 standard for Twitter/X
+  instagram: "fa-brands fa-instagram",
+  youtube: "fa-brands fa-youtube",
+  tumblr: "fa-brands fa-tumblr",
+  twitch: "fa-brands fa-twitch",
+  email: "fa-solid fa-envelope", // Email uses standard solid envelope icon
+};
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <h1 class="site-logo">Zealed Fujoshi</h1>
+
+    <ul class="site-social" aria-label="Social links">
+      {socials.map((s) => (
+        <li class={`social-${s.name}`}>
+          <a href={s.href} target="_blank" rel="noopener" title={s.title} aria-label={s.title}>
+            <i class={iconMap[s.name] || "fa-solid fa-link"} aria-hidden="true"></i>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>

@@ -1,0 +1,761 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = "ZEALED FUJOSHI :: Cyber-Shrine Archive" } = Astro.props;
+
+import SiteHeader from "../components/SiteHeader.astro";
+import Navigation from "../components/Navigation.astro";
+import PopularPosts from "../components/PopularPosts.astro";
+import SidebarAds from "../components/SidebarAds.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <style is:global>
+      :root {
+        --bg-color: white;
+        --window-bg: #fefefe;
+        --pink-accent: #ff69b4;
+        --cyan-accent: #00ffff;
+        --yellow-accent: #fff700;
+        --text-color: #e2d9f3;
+        --border-light: #482970;
+        --border-bevel: #ff8ad8;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overflow-x: hidden;
+        background-color: var(--bg-color);
+        background-size: 20px 20px;
+        background-position:
+          0 0,
+          10px 10px;
+        color: var(--text-color);
+        font-family: "Poppins", "Verdana", "Tahoma", sans-serif;
+        font-size: 13px;
+        padding: 15px;
+      }
+
+      a {
+        color: var(--cyan-accent);
+      }
+
+      /* Marquee Bar */
+      .marquee-container {
+        max-width: 1050px;
+        margin: 0 auto;
+        background: #000;
+        border: 2px inset var(--pink-accent);
+        color: var(--yellow-accent);
+        padding: 4px;
+        font-family: monospace;
+        margin-bottom: 15px;
+      }
+
+      /* Main Desktop Window Frame */
+      .desktop-wrapper {
+        max-width: 1050px;
+        margin: 0 auto;
+        border: 3px outset var(--border-bevel);
+        background-color: var(--window-bg);
+      }
+
+      /* Title Bar */
+      .window-header {
+        background: black;
+        color: #fff;
+        padding: 4px 8px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .window-buttons span {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: #ccc;
+        border: 1px outset #fff;
+        color: #000;
+        text-align: center;
+        line-height: 12px;
+        font-size: 10px;
+        cursor: pointer;
+        margin-left: 2px;
+      }
+
+      /* Layout Grid */
+      .layout-grid {
+        display: grid;
+        grid-template-columns: 260px 1fr 220px;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      /* Individual Content Box */
+      .box {
+        background: rgba(10, 3, 20, 0.85);
+        border: 2px outset var(--border-bevel);
+        padding: 10px;
+        margin-bottom: 12px;
+      }
+
+      .box-title {
+        background: var(--pink-accent);
+        color: #000;
+        font-weight: bold;
+        padding: 2px 6px;
+        margin: -10px -10px 10px -10px;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      /* Retro Navigation */
+      nav ul {
+        list-style: none;
+      }
+      nav li {
+        margin-bottom: 4px;
+      }
+
+      nav a {
+        display: block;
+        background: #2a1548;
+        color: var(--cyan-accent);
+        text-decoration: none;
+        padding: 5px 8px;
+        border: 1px solid var(--pink-accent);
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      nav a:hover {
+        background: var(--pink-accent);
+        color: #000;
+      }
+
+      /* Winamp */
+      .winamp-player {
+        background: #111;
+        border: 2px solid #555;
+        padding: 8px;
+        font-family: monospace;
+        color: #00ff00;
+      }
+
+      .winamp-screen {
+        background: #000;
+        border: 1px solid #333;
+        padding: 4px;
+        font-size: 10px;
+        margin-bottom: 6px;
+      }
+
+      .winamp-controls button {
+        background: #333;
+        color: #fff;
+        border: 1px outset #666;
+        padding: 2px 6px;
+        font-size: 9px;
+        cursor: pointer;
+      }
+
+      /* Shoutbox */
+      .shoutbox {
+        background: #000;
+        border: 1px solid var(--border-light);
+        height: 120px;
+        padding: 4px;
+        font-size: 10px;
+        overflow-y: auto;
+      }
+
+      .shoutbox p {
+        margin-bottom: 4px;
+      }
+
+      /* 88x31 Badges */
+      .badge-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: center;
+      }
+
+      .badge-mock {
+        width: 88px;
+        height: 31px;
+        background: #333;
+        border: 1px solid var(--cyan-accent);
+        color: #fff;
+        font-size: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      /* Blog cards (used on homepage) */
+      .post-card {
+        border-bottom: 1px dashed var(--pink-accent);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+
+      .post-card:last-child {
+        border-bottom: none;
+      }
+
+      .post-title {
+        color: var(--cyan-accent);
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      .post-title a {
+        color: var(--cyan-accent);
+        text-decoration: none;
+      }
+
+      .post-meta {
+        font-size: 10px;
+        color: var(--yellow-accent);
+        margin-bottom: 8px;
+      }
+
+      /* Markdown content */
+      .markdown-content h3 {
+        color: var(--pink-accent);
+        margin: 10px 0 5px 0;
+        font-size: 14px;
+      }
+
+      .markdown-content p {
+        margin-bottom: 10px;
+        line-height: 1.4;
+      }
+
+      .markdown-content a {
+        color: var(--cyan-accent);
+      }
+
+      .markdown-content ul,
+      .markdown-content ol {
+        margin: 0 0 10px 20px;
+      }
+
+      .markdown-content li {
+        margin-bottom: 4px;
+      }
+
+      /* Top Site Header (logo + socials) */
+      .site-header {
+        max-width: 1050px;
+        margin: 0 auto 15px;
+        padding: 12px 18px;
+        background: linear-gradient(90deg, #111111 40%, #1a0a2e);
+        border: 2px solid var(--border-bevel);
+        box-shadow: 0 0 10px rgba(255, 105, 180, 0.25);
+      }
+
+      .site-header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .site-logo {
+        font-weight: 700;
+        font-size: 22px;
+        text-transform: uppercase;
+        color: transparent !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        text-decoration: none;
+
+        background: linear-gradient(
+          90deg,
+          #ffffff 0%,
+          #ffffff 25%,
+          #ff0b0b 30%,
+          #ff990b 25%,
+          #0befff 42%,
+          #c407ff 50%,
+          #ffffff 75%,
+          #ffffff 100%
+        );
+        background-size: 500% 100%;
+        background-position: left;
+        transition: background-position 3s;
+      }
+
+      .site-logo:hover {
+        background-position: right;
+      }
+
+      .site-social {
+        list-style: none;
+        display: flex;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+      }
+
+      .site-social li a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #fff;
+        color: #111;
+        font-weight: 700;
+        font-size: 13px;
+        text-decoration: none;
+        transition:
+          transform 0.15s ease,
+          background 0.15s ease;
+      }
+
+      .site-social li a:hover {
+        transform: translateY(-1px);
+        background: var(--pink-accent);
+        color: #000;
+      }
+
+      .nav-box nav {
+        padding: 0;
+      }
+
+      .nav-box #main-menu-nav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-box #main-menu-nav > li {
+        position: relative;
+        margin: 0 0 4px;
+      }
+
+      .nav-box #main-menu-nav > li > a {
+        display: block;
+        background: #2a1548;
+        color: var(--cyan-accent);
+        text-decoration: none;
+        padding: 5px 8px;
+        border: 1px solid var(--pink-accent);
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .nav-box #main-menu-nav > li > a:hover {
+        background: var(--pink-accent);
+        color: #000;
+      }
+
+      .nav-box .sub-menu {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        min-width: 160px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        background: #111;
+        border: 1px solid var(--pink-accent);
+        z-index: 20;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+      }
+
+      .nav-box .has-sub:hover > .sub-menu,
+      .nav-box .has-sub:focus-within > .sub-menu {
+        display: block;
+      }
+
+      .nav-box .sub-menu li a {
+        display: block;
+        padding: 5px 8px;
+        color: var(--cyan-accent);
+        font-size: 11px;
+        font-weight: bold;
+        text-decoration: none;
+        border-bottom: 1px dotted #2a1548;
+      }
+
+      .nav-box .sub-menu li:last-child a {
+        border-bottom: none;
+      }
+
+      .nav-box .sub-menu li a:hover {
+        background: var(--pink-accent);
+        color: #000;
+      }
+
+      /* Popular posts */
+      .popular-widget .post {
+        display: flex;
+        gap: 10px;
+        margin: 12px 0 0;
+      }
+
+      .popular-widget .post:first-child {
+        margin-top: 0;
+      }
+
+      .popular-widget .post-image-link {
+        flex: 0 0 80px;
+        width: 80px;
+        height: 65px;
+        background-color: rgba(155, 155, 155, 0.15);
+        overflow: hidden;
+        display: block;
+      }
+
+      .popular-widget .post-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .popular-widget .post-info {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .popular-widget .post-title {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.35;
+        margin: 0 0 4px;
+      }
+
+      .popular-widget .post-title a {
+        color: var(--cyan-accent);
+        text-decoration: none;
+      }
+
+      .popular-widget .post-title a:hover {
+        color: var(--pink-accent);
+      }
+
+      .popular-widget .post-meta {
+        font-size: 10px;
+        color: var(--yellow-accent);
+        margin: 0;
+      }
+
+      /* Sidebar ads */
+      .ad-widget {
+        margin: 0 0 10px;
+        text-align: center;
+      }
+
+      .ad-widget:last-child {
+        margin-bottom: 0;
+      }
+
+      .ad-widget a {
+        display: inline-block;
+      }
+
+      .ad-widget img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border: 1px solid var(--border-light);
+      }
+
+      /* Responsive */
+      @media (max-width: 850px) {
+        .layout-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-box .sub-menu {
+          position: static;
+          box-shadow: none;
+        }
+
+        .nav-box .has-sub:hover > .sub-menu,
+        .nav-box .has-sub:focus-within > .sub-menu {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="marquee-container">
+      <marquee scrollamount="4"
+        >&#9733; WELCOME TO ZEALED FUJOSHI &#9733; WELCOME TO ZEALED FUJOSHI
+        &#9733; WELCOME TO ZEALED FUJOSHI &#9733;
+      </marquee>
+    </div>
+
+    <SiteHeader />
+    <div class="desktop-wrapper">
+
+      <div class="layout-grid">
+        <aside class="left-col">
+          <Navigation />
+          <PopularPosts />
+        </aside>
+
+        <main class="center-col">
+          <slot />
+        </main>
+
+        <aside class="right-col">
+          <SidebarAds />
+        </aside>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      // <![CDATA[
+      var colours = new Array("#a6f", "#60f", "#60f", "#a6f", "#ccc"); // colours for top, right, bottom and left borders and background of bubbles
+      var bubbles = 66; // maximum number of bubbles on screen
+      var over_or_under = "over"; // set to "over" for bubbles to always be on top, or "under" to allow them to float behind other objects
+
+      /****************************
+       * JavaScript Bubble Cursor  *
+       *(c)2010-13 mf2fm web-design*
+       *  http://www.mf2fm.com/rv  *
+       * DON'T EDIT BELOW THIS BOX *
+       ****************************/
+      var x = (ox = 400);
+      var y = (oy = 300);
+      var swide = 800;
+      var shigh = 600;
+      var sleft = (sdown = 0);
+      var bubb = new Array();
+      var bubbx = new Array();
+      var bubby = new Array();
+      var bubbs = new Array();
+      var sploosh = false;
+
+      function addLoadEvent(funky) {
+        var oldonload = window.onload;
+        if (typeof oldonload != "function") window.onload = funky;
+        else
+          window.onload = function () {
+            if (oldonload) oldonload();
+            funky();
+          };
+      }
+
+      addLoadEvent(buble);
+
+      function buble() {
+        if (document.getElementById) {
+          var i, rats, div;
+          for (i = 0; i < bubbles; i++) {
+            rats = createDiv("3px", "3px");
+            rats.style.visibility = "hidden";
+            rats.style.zIndex = over_or_under == "over" ? "1001" : "0";
+
+            div = createDiv("auto", "auto");
+            rats.appendChild(div);
+            div = div.style;
+            div.top = "1px";
+            div.left = "0px";
+            div.bottom = "1px";
+            div.right = "0px";
+            div.borderLeft = "1px solid " + colours[3];
+            div.borderRight = "1px solid " + colours[1];
+
+            div = createDiv("auto", "auto");
+            rats.appendChild(div);
+            div = div.style;
+            div.top = "0px";
+            div.left = "1px";
+            div.right = "1px";
+            div.bottom = "0px";
+            div.borderTop = "1px solid " + colours[0];
+            div.borderBottom = "1px solid " + colours[2];
+
+            div = createDiv("auto", "auto");
+            rats.appendChild(div);
+            div = div.style;
+            div.left = "1px";
+            div.right = "1px";
+            div.bottom = "1px";
+            div.top = "1px";
+            div.backgroundColor = colours[4];
+            if (navigator.appName == "Microsoft Internet Explorer")
+              div.filter = "alpha(opacity=50)";
+            else div.opacity = 0.5;
+            document.body.appendChild(rats);
+            bubb[i] = rats.style;
+          }
+          set_scroll();
+          set_width();
+          bubble();
+        }
+      }
+
+      function bubble() {
+        var c;
+        if (Math.abs(x - ox) > 1 || Math.abs(y - oy) > 1) {
+          ox = x;
+          oy = y;
+          for (c = 0; c < bubbles; c++)
+            if (!bubby[c]) {
+              bubb[c].left = (bubbx[c] = x) + "px";
+              bubb[c].top = (bubby[c] = y - 3) + "px";
+              bubb[c].width = "3px";
+              bubb[c].height = "3px";
+              bubb[c].visibility = "visible";
+              bubbs[c] = 3;
+              break;
+            }
+        }
+        for (c = 0; c < bubbles; c++) if (bubby[c]) update_bubb(c);
+        setTimeout("bubble()", 40);
+      }
+
+      document.onmousedown = splash;
+      document.onmouseup = function () {
+        clearTimeout(sploosh);
+      };
+
+      function splash() {
+        ox = -1;
+        oy = -1;
+        sploosh = setTimeout("splash()", 100);
+      }
+
+      function update_bubb(i) {
+        if (bubby[i]) {
+          bubby[i] -= bubbs[i] / 2 + (i % 2);
+          bubbx[i] += ((i % 5) - 2) / 5;
+          if (
+            bubby[i] > sdown &&
+            bubbx[i] > sleft &&
+            bubbx[i] < sleft + swide + bubbs[i]
+          ) {
+            if (Math.random() < (bubbs[i] / shigh) * 2 && bubbs[i]++ < 8) {
+              bubb[i].width = bubbs[i] + "px";
+              bubb[i].height = bubbs[i] + "px";
+            }
+            bubb[i].top = bubby[i] + "px";
+            bubb[i].left = bubbx[i] + "px";
+          } else {
+            bubb[i].visibility = "hidden";
+            bubby[i] = 0;
+            return;
+          }
+        }
+      }
+
+      document.onmousemove = mouse;
+      function mouse(e) {
+        if (e) {
+          y = e.pageY;
+          x = e.pageX;
+        } else {
+          set_scroll();
+          y = event.y + sdown;
+          x = event.x + sleft;
+        }
+      }
+
+      window.onresize = set_width;
+      function set_width() {
+        var sw_min = 999999;
+        var sh_min = 999999;
+        if (document.documentElement && document.documentElement.clientWidth) {
+          if (document.documentElement.clientWidth > 0)
+            sw_min = document.documentElement.clientWidth;
+          if (document.documentElement.clientHeight > 0)
+            sh_min = document.documentElement.clientHeight;
+        }
+        if (typeof self.innerWidth == "number" && self.innerWidth) {
+          if (self.innerWidth > 0 && self.innerWidth < sw_min)
+            sw_min = self.innerWidth;
+          if (self.innerHeight > 0 && self.innerHeight < sh_min)
+            sh_min = self.innerHeight;
+        }
+        if (document.body.clientWidth) {
+          if (
+            document.body.clientWidth > 0 &&
+            document.body.clientWidth < sw_min
+          )
+            sw_min = document.body.clientWidth;
+          if (
+            document.body.clientHeight > 0 &&
+            document.body.clientHeight < sh_min
+          )
+            sh_min = document.body.clientHeight;
+        }
+        if (sw_min == 999999 || sh_min == 999999) {
+          sw_min = 800;
+          sh_min = 600;
+        }
+        swide = sw_min;
+        shigh = sh_min;
+      }
+
+      window.onscroll = set_scroll;
+      function set_scroll() {
+        if (typeof self.pageYOffset == "number") {
+          sdown = self.pageYOffset;
+          sleft = self.pageXOffset;
+        } else if (
+          document.body &&
+          (document.body.scrollTop || document.body.scrollLeft)
+        ) {
+          sdown = document.body.scrollTop;
+          sleft = document.body.scrollLeft;
+        } else if (
+          document.documentElement &&
+          (document.documentElement.scrollTop ||
+            document.documentElement.scrollLeft)
+        ) {
+          sleft = document.documentElement.scrollLeft;
+          sdown = document.documentElement.scrollTop;
+        } else {
+          sdown = 0;
+          sleft = 0;
+        }
+      }
+
+      function createDiv(height, width) {
+        var div = document.createElement("div");
+        div.style.position = "absolute";
+        div.style.height = height;
+        div.style.width = width;
+        div.style.overflow = "hidden";
+        div.style.backgroundColor = "transparent";
+        return div;
+      }
+      // ]]>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all posts and sort newest-first
+const posts = await getCollection('posts');
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const formatDate = (date: Date) =>
+  date
+    .toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+    .toUpperCase();
+---
+
+<BaseLayout>
+  <div class="box">
+    <div class="box-title">Latest</div>
+
+    {posts.map((post) => (
+      <article class="post-card">
+        <h2 class="post-title">
+          <a href={`/posts/${post.slug}`}>{post.data.title}</a>
+        </h2>
+        <div class="post-meta">
+          POSTED: {formatDate(post.data.pubDate)} | CATEGORY: {post.data.category}
+        </div>
+        <p>{post.data.summary}</p>
+      </article>
+    ))}
+
+    {posts.length === 0 && (
+      <p>No posts yet. Drop a Markdown file into <code>src/content/posts/</code>.</p>
+    )}
+  </div>
+</BaseLayout>
