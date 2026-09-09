@@ -13,6 +13,7 @@ const postData = posts.map(post => ({
   readingTime: post.data.readingTime,
   coverImage: post.data.coverImage,
 }));
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <BaseLayout title="Search Posts - ZEALED FUJOSHI">
@@ -29,7 +30,7 @@ const postData = posts.map(post => ({
 
       <div id="no-results" class="hidden text-center py-16">
         <p class="text-white/60 text-xl">No posts found matching your query.</p>
-        <a href="/posts" class="mt-4 inline-block text-red-400 hover:text-red-300 underline">View all posts</a>
+        <a href=`${baseUrl}/posts` class="mt-4 inline-block text-red-400 hover:text-red-300 underline">View all posts</a>
       </div>
     </div>
   </div>

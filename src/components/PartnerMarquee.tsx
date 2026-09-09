@@ -1,32 +1,36 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import bandaiNamcoLogo from '../assets/partners/bandai-namco-logo-web-desktop.svg';
+import goodSmileLogo from '../assets/partners/goodsmile.svg';
+import lezhinLogo from '../assets/partners/lezhin.svg';
+import wlsLogo from '../assets/partners/wls-lg.svg';
 
 export default function PartnerMarquee() {
   const partners = [
     { 
       name: 'BANDAI NAMCO', 
-      logo: '/partners/bandai-namco-logo-web-desktop.svg', 
+      logo: bandaiNamcoLogo.src, 
       tagline: 'Entertainment',
       width: 160,
       height: 32
     },
     { 
       name: 'GOOD SMILE', 
-      logo: '/partners/goodsmile.svg', 
+      logo: goodSmileLogo.src, 
       tagline: 'Creative Studio',
       width: 140,
       height: 32
     },
     { 
       name: 'LEZHIN', 
-      logo: '/partners/lezhin.svg', 
+      logo: lezhinLogo.src, 
       tagline: 'Digital Publishing',
       width: 120,
       height: 32
     },
     { 
       name: 'WLS', 
-      logo: '/partners/wls-lg.svg', 
+      logo: wlsLogo.src, 
       tagline: 'Industry Partner',
       width: 100,
       height: 32

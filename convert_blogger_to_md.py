@@ -1,11 +1,4 @@
 """
-Blogger JSON Feed to Astro Markdown (.md) Converter
-===================================================
-This script fetches all blog posts from a Blogger site JSON feed 
-(e.g., https://www.zealedfujoshi.xyz/feeds/posts/default?alt=json)
-and converts each post into an Astro Content Collection Markdown file (.md) 
-matching your custom YAML frontmatter schema.
-
 Requirements: requests beautifulsoup4 html2text pyyaml
 """
 
@@ -26,9 +19,8 @@ except ImportError:
 
 from bs4 import BeautifulSoup
 
-# Configuration
 SITE_URL = "https://www.zealedfujoshi.xyz"
-OUTPUT_DIR = "./press"
+OUTPUT_DIR = "./src/content/posts/"
 MAX_RESULTS_PER_PAGE = 300
 
 def clean_slug(text):

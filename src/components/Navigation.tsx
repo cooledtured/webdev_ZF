@@ -9,12 +9,14 @@ export default function Navigation() {
   const desktopSearchInputRef = useRef<HTMLInputElement>(null);
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
 
+  // Automatically handles subpaths (/webdev_ZF) or custom domain root (/)
+  const baseUrl = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      window.location.href = `/posts/search?q=${encodeURIComponent(searchQuery.trim())}`;
+      window.location.href = `${baseUrl}/posts/search?q=${encodeURIComponent(searchQuery.trim())}`;
     } else {
-      // Focus desktop or mobile search bar if empty when user clicks search icon
       if (window.innerWidth >= 640) {
         desktopSearchInputRef.current?.focus();
       } else {
@@ -24,44 +26,36 @@ export default function Navigation() {
   };
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Podcasts', href: '/podcasts' },
-    { name: 'Posts', href: '/posts' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Home', href: `${baseUrl}/` },
+    { name: 'Podcasts', href: `${baseUrl}/podcasts` },
+    { name: 'Posts', href: `${baseUrl}/posts` },
+    { name: 'Contact', href: `${baseUrl}/contact` },
   ];
 
   return (
     <>
-      {/* Floating Glass Header */}
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Outer fixed container without transforms */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/10">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        >
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo with Heartbeat Throb Effect */}
-            <motion.a
-              href="/"
-              whileHover={{
-                scale: [1, 1.08, 0.98, 1.06, 1],
-              }}
-              transition={{
-                duration: 0.8,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
+            {/* Logo */}
+            <a
+              href={`${baseUrl}/`}
               className="flex items-center gap-2 group cursor-pointer"
             >
               <span className="text-lg md:text-xl font-black tracking-wider uppercase select-none">
                 <span className="text-porcelain">ZEALED</span>
                 <span className="text-razzmatazz">FUJOSHI</span>
               </span>
-            </motion.a>
+            </a>
 
             {/* Desktop Navigation */}
-            <nav class="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+            <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
               {navLinks.map((link) => (
                 <motion.a
                   key={link.name}
@@ -109,14 +103,14 @@ export default function Navigation() {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Mobile Menu */}
         <motion.div
           initial={false}
           animate={{ height: isOpen ? 'auto' : 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden overflow-hidden bg-black/80 backdrop-blur-xl border-t border-white/5"
+          className="md:hidden overflow-hidden bg-black/90 backdrop-blur-xl border-t border-white/5"
         >
           <div className="px-4 py-4 space-y-3">
             <form onSubmit={handleSearchSubmit} className="relative mb-4" role="search">
@@ -151,10 +145,7 @@ export default function Navigation() {
             </nav>
           </div>
         </motion.div>
-      </motion.header>
-
-      {/* Spacer */}
-      <div className="h-16 md:h-20" />
+      </header>
     </>
   );
 }

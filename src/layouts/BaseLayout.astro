@@ -30,7 +30,7 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#120A17" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   </head>
   <body
     class="bg-surface text-porcelain overflow-x-hidden selection:bg-razzmatazz/30 selection:text-porcelain"
@@ -92,7 +92,7 @@ const {
       </defs>
     </svg>
 
-    <Navigation client:idle />
+    <Navigation client:load />
 
     <main class="relative z-10 min-h-screen">
       <slot />

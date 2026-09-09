@@ -4,6 +4,8 @@
  * High-impact, editorial-style hero element for Zealed Fujoshi Press.
  * Features GSAP animations and brand-aligned colors.
  */
+import { Image } from "astro:assets";
+import heroBackground from "../assets/background.webp";
 ---
 
 <section
@@ -11,9 +13,9 @@
 >
   <!-- Background Image -->
   <div class="absolute inset-0 z-0 overflow-hidden">
-    <img
+    <Image
       id="hero-bg"
-      src="/background.webp"
+      src={heroBackground}
       alt=""
       fetchpriority="high"
       decoding="async"
@@ -172,6 +174,11 @@
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import daniChambersThumb from "../assets/carousel/DaniChambers.webp";
+  import davidSobolovThumb from "../assets/carousel/DavidSobolov.webp";
+  import kaijiThumb from "../assets/carousel/Kaiji.webp";
+  import hugoVladThumb from "../assets/carousel/HugoVlad.webp";
+  import animeCentralThumb from "../assets/carousel/animecentral.webp";
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -187,27 +194,27 @@
       {
         id: "eYPSntt8y9A",
         name: "DANI CHAMBERS",
-        thumbnail: "/carousel/DaniChambers.webp",
+        thumbnail: daniChambersThumb.src,
       },
       {
         id: "pS4MN6fd3ns",
         name: "DAVID SOBOLOV",
-        thumbnail: "/carousel/DavidSobolov.webp",
+        thumbnail: davidSobolovThumb.src,
       },
       {
         id: "LGh5KL2Oltc",
         name: "KAIJI TANG",
-        thumbnail: "/carousel/Kaiji.webp",
+        thumbnail: kaijiThumb.src,
       },
       {
         id: "fUSqCDd8o7A",
         name: "HUGO VLAD",
-        thumbnail: "/carousel/HugoVlad.webp",
+        thumbnail: hugoVladThumb.src,
       },
       {
         id: "d_TuDwotT2s",
         name: "ACEN 2026",
-        thumbnail: "/carousel/animecentral.webp",
+        thumbnail: animeCentralThumb.src,
       },
     ];
 

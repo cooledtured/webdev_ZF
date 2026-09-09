@@ -11,6 +11,15 @@ import {
   siApplepodcasts,
 } from "simple-icons";
 
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const navLinks = [
+  { name: "Home", href: `${baseUrl}/` },
+  { name: "Podcasts", href: `${baseUrl}/podcasts` },
+  { name: "Posts", href: `${baseUrl}/posts` },
+  { name: "Contact & PR", href: `${baseUrl}/contact` },
+];
+
 const socialLinks = [
   { name: "Facebook", url: "https://www.facebook.com/zealedfujoshi", path: siFacebook.path },
   { name: "X (Twitter)", url: "https://twitter.com/zealedfujoshi", path: siX.path },
@@ -21,6 +30,8 @@ const socialLinks = [
   { name: "Spotify", url: "https://open.spotify.com/show/61re9eciOLavgZ9wPkBLOr?si=e5cdd14601914787", path: siSpotify.path },
   { name: "Apple Podcasts", url: "https://podcasts.apple.com/us/podcast/zealed-fujoshi-a-yaoi-boys-love-bl-podcast/id1530688864", path: siApplepodcasts.path },
 ];
+
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="relative z-10 bg-surface border-t border-white/10 text-porcelain py-16">
@@ -29,10 +40,12 @@ const socialLinks = [
       
       <!-- Brand & Tagline -->
       <div class="md:col-span-6 space-y-4">
-        <h2 class="text-2xl font-black tracking-wider uppercase">
-          <span class="text-porcelain">ZEALED</span>
-          <span class="text-razzmatazz">FUJOSHI</span>
-        </h2>
+        <a href={`${baseUrl}/`} class="inline-block">
+          <h2 class="text-2xl font-black tracking-wider uppercase">
+            <span class="text-porcelain">ZEALED</span>
+            <span class="text-razzmatazz">FUJOSHI</span>
+          </h2>
+        </a>
         <p class="text-sm text-porcelain/85 max-w-sm leading-relaxed">
           A show heavily focused on the hottest and latest boys love / yaoi anime, manga, manhwa and webtoon.
         </p>
@@ -44,10 +57,13 @@ const socialLinks = [
           [ NAVIGATION ]
         </h3>
         <ul class="space-y-2 text-sm text-porcelain/85">
-          <li><a href="/" class="hover:text-razzmatazz transition-colors">Home</a></li>
-          <li><a href="/podcasts" class="hover:text-razzmatazz transition-colors">Podcasts</a></li>
-          <li><a href="/posts" class="hover:text-razzmatazz transition-colors">Posts</a></li>
-          <li><a href="/contact" class="hover:text-razzmatazz transition-colors">Contact & PR</a></li>
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-razzmatazz transition-colors block py-0.5">
+                {link.name}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -105,7 +121,7 @@ const socialLinks = [
 
     <!-- Copyright Bar -->
     <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-porcelain/60">
-      <p>© 2026 ZEALED FUJOSHI PRESS. All rights reserved.</p>
+      <p>© {currentYear} ZEALED FUJOSHI PRESS. All rights reserved.</p>
     </div>
   </div>
 </footer>

@@ -6,7 +6,6 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://zealedfujoshi.xyz",
   trailingSlash: "ignore",
 
   integrations: [react(), tailwind()],
@@ -38,10 +37,9 @@ export default defineConfig({
   },
 
   build: {
-    format: "file",
+    format: "directory",
 
     inlineStylesheets: "always",
   },
 
-  integrations: [react(), tailwind()],
 });
