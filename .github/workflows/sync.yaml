@@ -7,6 +7,9 @@ on:
     - cron: '0 8 * * 0' # 8 am on Sunday! :)
   workflow_dispatch: # And a manual sync
 
+permissions:
+  contents: write
+
 jobs:
   run-sync:
     runs-on: ubuntu-latest
