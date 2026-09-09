@@ -1,0 +1,67 @@
+---
+title: "🤦‍♀️ PARAM ISN'T MAKING BEST DECISIONS 👊 | Anti P.T. (Lee Gpiee) #39 Review"
+summary: "📖 ABOUT A charming young man with a job at one of the top firms in Korea, Param is a catch by everyone’s standards. However, he has a couple secrets that could..."
+pubDate: 2021-01-02
+author: "Zealed Fujoshi"
+category: PODCAST
+coverImage: "https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/8442330/8442330-1623043536747-f1773c53a00a5.jpg"
+featured: false
+readingTime: 3
+tags: ["Podcast", "Episode", "Yaoi", "BL"]
+audioUrl: "https://traffic.megaphone.fm/APO3239904984.mp3"
+---
+
+## 🤦‍♀️ PARAM ISN'T MAKING BEST DECISIONS 👊 | Anti P.T. (Lee Gpiee) #39 Review
+
+📖 ABOUT
+
+A charming young man with a job at one of the top firms in Korea, Param is a catch by everyone’s standards. However, he has a couple secrets that could topple his hard-won elite status: Param is gay, and has an oversensitive body that gets turned on at the slightest touch. So far, he’s coped by hiding his crush on his boss and taking care of “emergencies” in the office bathroom. But one day, he’s caught redhanded by the new personal trainer at the company gym. Will this hot, smirking jock ruin Param's life, or turn out to be his remedy?
+
+SUPPORT THE AUTHOR
+
+✍️ Creator: Lee Gpiee
+
+https://www.lezhin.com/en/comic/anti_pt_en
+
+😏 ABOUT ME 😏
+
+My name is CeeCee and I am the one and only host of the ZEALED FUJOSHI show. A  reaction and review show heavily focused on the hottest and latest boys love anime, manga, manwha and webtoon.
+
+DONATION 🤝 https://anchor.fm/zealed-fujoshi/support
+
+👨‍🎤 MUSIC CREDIT 👩‍🎤
+
+Title 🎵 You & I
+
+Artist 🎤 Soyb & Amine Maxwell
+
+SUPPORT MY CHANNEL BY LIKING ❤️ AND 👍 SUBSCRIBING
+
+\- https://www.facebook.com/ZealedFujoshi
+
+\- https://www.youtube.com/channel/UCiGPVUrJltA4BXI_jvBBqlQ
+
+\- www.zealedfujoshi.xyz
+
+LISTEN TO MY PODCAST 🎙️
+
+https://open.spotify.com/show/61re9eciOLavgZ9wPkBLOr?si=tDYKG_nKRrqxZ-SlE_SE0g
+
+WANT TO BE TEASED? CHECK 👇👇👇
+
+\- https://www.instagram.com/zealedfujoshi/
+
+\- https://twitter.com/ZealedFujoshi
+
+\- https://zealedfujoshi.tumblr.com/
+
+ANTI P.T. | Lee Gpiee | Love Triangle Yaoi | Love Triangle BL | Love Triangle Boys Love | Hwi Seo | Param Lee | Taehyun Han | Lezhin | LGBTQ  | BL | Yaoi | Body Builder Yaoi | Body Builder BL | Body Builder Boys Love | Chicago Podcast | Yaoi Podcast | Fujoshi Podcast | Boys Love Podcast | BL Podcast |
+
+#ANTIPT #LeeGpiee #LoveTriangle #HwiSeo #ParamLee #Taehyun Han #SeoHwi #LeeParam #HanTaehyun #Lezhin #LGBTQ #BL #Yaoi #BodyBuilder
+
+### Listen to Episode
+
+<audio controls class="w-full my-6 rounded-lg bg-white/5 border border-white/10 p-2">
+  <source src="https://traffic.megaphone.fm/APO3239904984.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
