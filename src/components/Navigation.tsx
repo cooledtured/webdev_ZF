@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Menu, X, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -6,10 +6,20 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const desktopSearchInputRef = useRef<HTMLInputElement>(null);
+  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       window.location.href = `/posts/search?q=${encodeURIComponent(searchQuery.trim())}`;
+    } else {
+      // Focus desktop or mobile search bar if empty when user clicks search icon
+      if (window.innerWidth >= 640) {
+        desktopSearchInputRef.current?.focus();
+      } else {
+        mobileSearchInputRef.current?.focus();
+      }
     }
   };
 
@@ -51,7 +61,7 @@ export default function Navigation() {
             </motion.a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav class="hidden md:flex items-center gap-8" aria-label="Main Navigation">
               {navLinks.map((link) => (
                 <motion.a
                   key={link.name}
@@ -67,15 +77,21 @@ export default function Navigation() {
             {/* Right Actions */}
             <div className="flex items-center gap-4">
               <div className="hidden sm:flex items-center gap-2">
-                <form onSubmit={handleSearchSubmit} className="relative group">
+                <form onSubmit={handleSearchSubmit} className="relative group" role="search">
                   <input
+                    ref={desktopSearchInputRef}
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search posts..."
-                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-[#FF1177] transition-all w-40 opacity-100"
-                    />
-                    <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:text-[#FF1177] transition-colors">
+                    aria-label="Search posts"
+                    className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-[#FF1177] transition-all w-40 opacity-100"
+                  />
+                  <button 
+                    type="submit" 
+                    aria-label="Submit search or focus search input"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:text-[#FF1177] transition-colors cursor-pointer"
+                  >
                     <Search size={14} className="text-white/50" />
                   </button>
                 </form>
@@ -83,8 +99,11 @@ export default function Navigation() {
 
               {/* Mobile Menu Button */}
               <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden p-2 hover:bg-white/5 rounded-lg transition"
+                aria-label={isOpen ? "Close menu" : "Open navigation menu"}
+                aria-expanded={isOpen}
+                className="md:hidden p-2 hover:bg-white/5 rounded-lg transition cursor-pointer"
               >
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -100,28 +119,36 @@ export default function Navigation() {
           className="md:hidden overflow-hidden bg-black/80 backdrop-blur-xl border-t border-white/5"
         >
           <div className="px-4 py-4 space-y-3">
-            <form onSubmit={handleSearchSubmit} className="relative mb-4">
+            <form onSubmit={handleSearchSubmit} className="relative mb-4" role="search">
               <input
+                ref={mobileSearchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search posts..."
+                aria-label="Search posts"
                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-[#FF1177]"
               />
-              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white">
+              <button 
+                type="submit" 
+                aria-label="Submit search"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-white/50 hover:text-white cursor-pointer"
+              >
                 <Search size={18} />
               </button>
             </form>
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="block text-sm uppercase tracking-wider text-white/70 hover:text-white hover:pl-2 transition-all"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
+            <nav aria-label="Mobile Navigation" className="space-y-3">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="block text-sm uppercase tracking-wider text-white/70 hover:text-white hover:pl-2 transition-all"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </a>
+              ))}
+            </nav>
           </div>
         </motion.div>
       </motion.header>

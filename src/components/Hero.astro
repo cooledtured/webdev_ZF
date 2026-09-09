@@ -13,8 +13,11 @@
   <div class="absolute inset-0 z-0 overflow-hidden">
     <img
       id="hero-bg"
-      src="/background.png"
+      src="/background.webp"
       alt=""
+      fetchpriority="high"
+      decoding="async"
+      style="filter:blur(0.5px);"
       class="w-full h-full object-cover opacity-40 scale-125 origin-center"
     />
   </div>
@@ -42,22 +45,26 @@
         <div class="flex flex-wrap gap-4 pt-4 hero-element">
           <a
             href="/posts"
-            class="px-8 py-3.5 rounded-xl bg-razzmatazz text-porcelain font-semibold hover:shadow-lg hover:shadow-razzmatazz/30 hover:bg-razzmatazz/90 transition-all duration-300 flex items-center gap-2 group"
+            class="px-8 py-3.5 rounded-xl bg-[#D90052] text-porcelain font-bold hover:shadow-lg hover:shadow-razzmatazz/30 hover:bg-[#B80045] transition-all duration-300 flex items-center gap-2 group cursor-pointer"
           >
-            <span>EXPLORE POSTS</span>
+            <span class="text-porcelain group-hover:text-porcelain"
+              >EXPLORE POSTS</span
+            >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="currentColor"
+              stroke="white"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
               class="group-hover:translate-x-1 transition-transform"
-              ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
             >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
           </a>
 
           <a
@@ -161,13 +168,13 @@
     </div>
   </div>
 </section>
+
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Declare global YT interface for TypeScript
   declare global {
     interface Window {
       onYouTubeIframeAPIReady?: () => void;
@@ -176,41 +183,40 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Parallax Scroll Effect
-    gsap.to("#hero-bg", {
-      yPercent: 20,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "section",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-
-    // GSAP Hero Entrance
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-    tl.from(".hero-title span", {
-      y: 40,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.1,
-    });
-
-    // Video Carousel Config
     const videos = [
-      { id: "eYPSntt8y9A", name: "DANI CHAMBERS", thumbnail: "/carousel/DaniChambers.jpg" },
-      { id: "pS4MN6fd3ns", name: "DAVID SOBOLOV", thumbnail: "/carousel/DavidSobolov.jpg" },
-      { id: "LGh5KL2Oltc", name: "KAIJI TANG", thumbnail: "/carousel/KaijiTang.jpg" },
-      { id: "fUSqCDd8o7A", name: "HUGO VLAD", thumbnail: "/carousel/HugoVlad.jpg" },
-      { id: "d_TuDwotT2s", name: "ACEN 2026", thumbnail: "/carousel/Acen2026.jpg" },
+      {
+        id: "eYPSntt8y9A",
+        name: "DANI CHAMBERS",
+        thumbnail: "/carousel/DaniChambers.webp",
+      },
+      {
+        id: "pS4MN6fd3ns",
+        name: "DAVID SOBOLOV",
+        thumbnail: "/carousel/DavidSobolov.webp",
+      },
+      {
+        id: "LGh5KL2Oltc",
+        name: "KAIJI TANG",
+        thumbnail: "/carousel/Kaiji.webp",
+      },
+      {
+        id: "fUSqCDd8o7A",
+        name: "HUGO VLAD",
+        thumbnail: "/carousel/HugoVlad.webp",
+      },
+      {
+        id: "d_TuDwotT2s",
+        name: "ACEN 2026",
+        thumbnail: "/carousel/animecentral.webp",
+      },
     ];
 
     let currentIdx = 0;
     let isHovered = false;
     let isVideoPlaying = false;
     let autoSlideTimer: ReturnType<typeof setInterval>;
-    const ytPlayers: any[] = [];
+    let ytScriptLoading = false;
+    const ytPlayers: Record<number, any> = {};
 
     const track = document.getElementById("video-carousel-track");
     const nameDisplay = document.getElementById("current-video-name");
@@ -219,73 +225,135 @@
 
     if (!track) return;
 
-    // Render all slides
+    // 1. Perform DOM Mutation Writes First
     track.innerHTML = videos
       .map(
         (video, index) => `
-    <div class="vidcontainer w-full h-full flex-shrink-0 relative bg-black/40 group/vid">
-      <img 
-        src="${video.thumbnail}" 
-        alt="${video.name}" 
-        class="absolute inset-0 w-full h-full object-cover z-10 transition-opacity duration-500 pointer-events-none thumbnail-overlay"
-        onload="this.classList.add('loaded')"
-      />
-      <iframe 
-        id="yt-player-${index}"
-        class="w-full h-full relative z-0"
-        src="https://www.youtube.com/embed/${video.id}?enablejsapi=1" 
-        title="${video.name} Interview"
-        frameborder="0" 
-        loading="${index === 0 ? "eager" : "lazy"}"
-        onload="this.previousElementSibling?.classList.add('opacity-0')"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-        allowfullscreen>
-      </iframe>
+    <div class="vidcontainer w-full h-full flex-shrink-0 relative bg-black/40 group/vid" data-index="${index}">
+      <button 
+        type="button"
+        class="play-facade absolute inset-0 w-full h-full z-10 flex items-center justify-center cursor-pointer group/btn bg-black/30 hover:bg-black/10 transition-colors"
+        aria-label="Play video: ${video.name}"
+        data-index="${index}"
+      >
+        <img 
+          src="${video.thumbnail}" 
+          alt="${video.name}" 
+          width="1280"
+          height="720"
+          class="absolute inset-0 w-full h-full object-cover z-0 thumbnail-overlay"
+          onerror="this.onerror=null; this.src='https://i.ytimg.com/vi/${video.id}/hqdefault.jpg';"
+        />
+        <div class="relative z-10 w-16 h-16 rounded-full bg-razzmatazz/90 text-porcelain flex items-center justify-center shadow-lg group-hover/btn:scale-110 group-hover/btn:bg-razzmatazz transition-all duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" class="ml-1">
+            <polygon points="5,3 19,12 5,21"></polygon>
+          </svg>
+        </div>
+      </button>
+      <div id="yt-player-slot-${index}" class="w-full h-full relative z-0"></div>
     </div>
-  `
+  `,
       )
       .join("");
 
-    // Load YouTube IFrame API Script dynamically
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      const firstScriptTag = document.getElementsByTagName("script")[0];
-      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+    // 2. Double-rAF ensures style recalculation & layout pass are fully committed by browser
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        gsap.to("#hero-bg", {
+          yPercent: 20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "section",
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+
+        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+        tl.from(".hero-title span", {
+          y: 40,
+          opacity: 0,
+          duration: 1,
+          stagger: 0.1,
+        });
+      });
+    });
+
+    function loadYTApi(callback?: () => void) {
+      if (window.YT && window.YT.Player) {
+        if (callback) callback();
+        return;
+      }
+
+      if (!ytScriptLoading) {
+        ytScriptLoading = true;
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+      }
+
+      const prevReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (prevReady) prevReady();
+        if (callback) callback();
+      };
     }
 
-    // Initialize YT Player instances when API is ready
-    function initYTPlayers() {
-      videos.forEach((_, index) => {
-        const iframe = document.getElementById(`yt-player-${index}`);
-        if (iframe && window.YT && window.YT.Player) {
-          ytPlayers[index] = new window.YT.Player(iframe, {
-            events: {
-              onStateChange: (event: any) => {
-                // 1 = PLAYING, 3 = BUFFERING
-                if (event.data === 1 || event.data === 3) {
-                  isVideoPlaying = true;
-                } else if (event.data === 0 || event.data === 2) {
-                  // 0 = ENDED, 2 = PAUSED
-                  isVideoPlaying = false;
-                }
-              },
-            },
-          });
+    function activateVideo(index: number) {
+      const container = track.querySelector(`[data-index="${index}"]`);
+      if (!container) return;
+
+      const facade = container.querySelector(".play-facade");
+      const slot = container.querySelector(`#yt-player-slot-${index}`);
+
+      if (!slot) return;
+
+      loadYTApi(() => {
+        if (ytPlayers[index]) {
+          ytPlayers[index].playVideo();
+          return;
         }
+
+        ytPlayers[index] = new window.YT.Player(slot, {
+          videoId: videos[index].id,
+          playerVars: {
+            autoplay: 1,
+            enablejsapi: 1,
+            rel: 0,
+          },
+          events: {
+            onReady: (e: any) => {
+              if (facade) facade.remove();
+              e.target.playVideo();
+            },
+            onStateChange: (event: any) => {
+              if (event.data === 1 || event.data === 3) {
+                isVideoPlaying = true;
+              } else if (event.data === 0 || event.data === 2) {
+                isVideoPlaying = false;
+              }
+            },
+          },
+        });
       });
     }
 
-    if (window.YT && window.YT.Player) {
-      initYTPlayers();
-    } else {
-      window.onYouTubeIframeAPIReady = initYTPlayers;
-    }
+    track.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest(".play-facade") as HTMLButtonElement | null;
+      if (btn) {
+        const idx = parseInt(btn.dataset.index || "0", 10);
+        activateVideo(idx);
+      }
+    });
 
-    // Slide Transition Function
     function goToSlide(index: number) {
-      // Pause active YouTube video when moving to another slide
-      if (ytPlayers[currentIdx] && typeof ytPlayers[currentIdx].pauseVideo === "function") {
+      if (
+        ytPlayers[currentIdx] &&
+        typeof ytPlayers[currentIdx].pauseVideo === "function"
+      ) {
         ytPlayers[currentIdx].pauseVideo();
       }
       isVideoPlaying = false;
@@ -301,18 +369,15 @@
       }
     }
 
-    // Auto-slide Timer Loop
     function startAutoSlide() {
       clearInterval(autoSlideTimer);
       autoSlideTimer = setInterval(() => {
-        // ONLY slide if user is NOT hovering AND video is NOT playing
         if (!isHovered && !isVideoPlaying) {
           goToSlide(currentIdx + 1);
         }
       }, 6000);
     }
 
-    // Hover Listeners (separately controls isHovered)
     const carouselWrapper = track.parentElement;
     carouselWrapper?.addEventListener("mouseenter", () => {
       isHovered = true;
@@ -322,7 +387,6 @@
       isHovered = false;
     });
 
-    // Navigation Controls
     nextBtn?.addEventListener("click", () => {
       goToSlide(currentIdx + 1);
       startAutoSlide();
@@ -333,7 +397,6 @@
       startAutoSlide();
     });
 
-    // Start auto-slider
     startAutoSlide();
   });
 </script>
