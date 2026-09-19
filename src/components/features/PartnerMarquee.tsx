@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import bandaiNamcoLogo from '../assets/partners/bandai-namco-logo-web-desktop.svg';
-import goodSmileLogo from '../assets/partners/goodsmile.svg';
-import lezhinLogo from '../assets/partners/lezhin.svg';
-import wlsLogo from '../assets/partners/wls-lg.svg';
+import bandaiNamcoLogo from '../../assets/partners/bandai-namco-logo-web-desktop.svg';
+import goodSmileLogo from '../../assets/partners/goodsmile.svg';
+import lezhinLogo from '../../assets/partners/lezhin.svg';
+import wlsLogo from '../../assets/partners/wls-lg.svg';
 
 export default function PartnerMarquee() {
   const partners = [

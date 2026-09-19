@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Menu, X, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { resolvePath } from '../../utils/url';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,13 +10,10 @@ export default function Navigation() {
   const desktopSearchInputRef = useRef<HTMLInputElement>(null);
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
 
-  // Automatically handles subpaths (/webdev_ZF) or custom domain root (/)
-  const baseUrl = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
-
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      window.location.href = `${baseUrl}/posts/search?q=${encodeURIComponent(searchQuery.trim())}`;
+      window.location.href = resolvePath(`/posts/search?q=${encodeURIComponent(searchQuery.trim())}`);
     } else {
       if (window.innerWidth >= 640) {
         desktopSearchInputRef.current?.focus();
@@ -26,10 +24,10 @@ export default function Navigation() {
   };
 
   const navLinks = [
-    { name: 'Home', href: `${baseUrl}/` },
-    { name: 'Podcasts', href: `${baseUrl}/podcasts` },
-    { name: 'Posts', href: `${baseUrl}/posts` },
-    { name: 'Contact', href: `${baseUrl}/contact` },
+    { name: 'Home', href: resolvePath('/') },
+    { name: 'Podcasts', href: resolvePath('/podcasts') },
+    { name: 'Posts', href: resolvePath('/posts') },
+    { name: 'Contact', href: resolvePath('/contact') },
   ];
 
   return (
@@ -45,7 +43,7 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <a
-              href={`${baseUrl}/`}
+              href={resolvePath('/')}
               className="flex items-center gap-2 group cursor-pointer"
             >
               <span className="text-lg md:text-xl font-black tracking-wider uppercase select-none">

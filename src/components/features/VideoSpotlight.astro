@@ -1,0 +1,125 @@
+---
+/**
+ * VideoSpotlight.astro
+ * Extracted YouTube video carousel from the Hero section.
+ * Handles dynamic rendering of YouTube embeds and thumbnail transitions.
+ */
+---
+
+<div class="lg:col-span-5 hero-element">
+  <div class="relative p-8 rounded-3xl card-glass shadow-2xl overflow-hidden group">
+    <div class="absolute -top-20 -right-20 w-48 h-48 bg-velvet-orchid rounded-full blur-3xl opacity-50"></div>
+
+    <!-- Outer Carousel Viewport (Masks overflowing slides) -->
+    <div class="relative w-full aspect-video overflow-hidden rounded-xl border border-white/10 bg-black/20 group/carousel">
+      <!-- Sliding Track Container -->
+      <div id="video-carousel-track" class="flex w-full h-full transition-transform duration-700 ease-in-out">
+        <!-- Slides rendered dynamically via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Carousel Controls -->
+    <div class="flex justify-center gap-3 mt-4">
+      <button id="prev-video" aria-label="Previous Video" class="p-3 rounded-full bg-white/[0.05] backdrop-blur-md text-porcelain hover:text-razzmatazz transition-all duration-300 border border-white/10 hover:border-razzmatazz/50">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+      </button>
+      <button id="next-video" aria-label="Next Video" class="p-3 rounded-full bg-white/[0.05] backdrop-blur-md text-porcelain hover:text-razzmatazz transition-all duration-300 border border-white/10 hover:border-razzmatazz/50">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>
+    </div>
+
+    <div class="pt-6 mt-6 border-t border-white/10 flex justify-between items-center text-xs text-porcelain/50 font-mono">
+      <span id="current-video-name" class="text-porcelain/70 uppercase">DANI CHAMBERS</span>
+      <a href="https://www.youtube.com/c/ZealedFujoshi" target="_blank" rel="noopener noreferrer" class="text-razzmatazz font-medium group-hover:underline flex items-center gap-1">
+        <span>VIEW ALL INTERVIEWS</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  import daniChambersThumb from "../../assets/carousel/DaniChambers.webp";
+  import davidSobolovThumb from "../../assets/carousel/DavidSobolov.webp";
+  import kaijiThumb from "../../assets/carousel/Kaiji.webp";
+  import hugoVladThumb from "../../assets/carousel/HugoVlad.webp";
+  import animeCentralThumb from "../../assets/carousel/animecentral.webp";
+
+  declare global {
+    interface Window {
+      onYouTubeIframeAPIReady?: () => void;
+      YT: any;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const videos = [
+      { id: "eYPSntt8y9A", name: "DANI CHAMBERS", thumbnail: daniChambersThumb.src },
+      { id: "pS4MN6fd3ns", name: "DAVID SOBOLOV", thumbnail: davidSobolovThumb.src },
+      { id: "uY5rTfPzPZg", name: "KAIJI", thumbnail: kaijiThumb.src },
+      { id: "S_vS3eA-PzQ", name: "HUGO VLAD", thumbnail: hugoVladThumb.src },
+      { id: "R1-5uP7Lp1A", name: "ANIME CENTRAL", thumbnail: animeCentralThumb.src },
+    ];
+
+    const track = document.getElementById("video-carousel-track");
+    const nameDisplay = document.getElementById("current-video-name");
+    const prevBtn = document.getElementById("prev-video");
+    const nextBtn = document.getElementById("next-video");
+
+    if (!track || !nameDisplay || !prevBtn || !nextBtn) return;
+
+    let currentIndex = 0;
+
+    // Initial Render
+    videos.forEach((video, index) => {
+      const slide = document.createElement("div");
+      slide.className = "relative w-full h-full flex-shrink-0 overflow-hidden";
+      slide.innerHTML = `
+        <img src="${video.thumbnail}" class="absolute inset-0 w-full h-full object-cover" alt="${video.name}">
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
+          <button class="p-4 rounded-full bg-razzmatazz text-white scale-75 group-hover/carousel:scale-100 transition-transform duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      `;
+      
+      slide.addEventListener("click", () => {
+        loadVideo(video.id);
+      });
+      
+      track.appendChild(slide);
+    });
+
+    function loadVideo(id: string) {
+      track.innerHTML = `
+        <iframe 
+          class="w-full h-full" 
+          src="https://www.youtube.com/embed/${id}?autoplay=1" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen
+        ></iframe>
+      `;
+    }
+
+    function updateCarousel(index: number) {
+      currentIndex = index;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      nameDisplay.textContent = videos[currentIndex].name;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      let newIndex = currentIndex - 1;
+      if (newIndex < 0) newIndex = videos.length - 1;
+      updateCarousel(newIndex);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      let newIndex = currentIndex + 1;
+      if (newIndex >= videos.length) newIndex = 0;
+      updateCarousel(newIndex);
+    });
+
+    updateCarousel(0);
+  });
+</script>

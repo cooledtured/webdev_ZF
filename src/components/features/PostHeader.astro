@@ -1,0 +1,56 @@
+---
+import { resolvePath } from "../../utils/url";
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  publishDate: Date;
+  readingTime?: string;
+  coverImage?: string;
+}
+
+const { title, description, category, publishDate, readingTime, coverImage } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+}).format(publishDate);
+
+const resolvedCover = coverImage?.startsWith("/")
+  ? resolvePath(coverImage)
+  : coverImage;
+---
+
+<header class="mb-10 space-y-6 text-center">
+  <div class="flex items-center justify-center gap-3 text-xs font-mono uppercase tracking-widest text-razzmatazz">
+    <span>[{category}]</span>
+    <span>•</span>
+    <time datetime={publishDate.toISOString()}>{formattedDate}</time>
+    {readingTime && (
+      <>
+        <span>•</span>
+        <span>{readingTime} min read</span>
+      </>
+    )}
+  </div>
+
+  <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-porcelain max-w-4xl mx-auto leading-tight">
+    {title}
+  </h1>
+
+  <p class="text-lg text-porcelain/80 max-w-2xl mx-auto leading-relaxed">
+    {description}
+  </p>
+
+  {resolvedCover && (
+    <div class="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-surface">
+      <img
+        src={resolvedCover}
+        alt={title}
+        class="w-full h-[400px] object-cover"
+      />
+    </div>
+  )}
+</header>

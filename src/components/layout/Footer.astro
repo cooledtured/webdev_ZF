@@ -10,14 +10,13 @@ import {
   siSpotify,
   siApplepodcasts,
 } from "simple-icons";
-
-const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
+import { resolvePath } from "../../utils/url";
 
 const navLinks = [
-  { name: "Home", href: `${baseUrl}/` },
-  { name: "Podcasts", href: `${baseUrl}/podcasts` },
-  { name: "Posts", href: `${baseUrl}/posts` },
-  { name: "Contact & PR", href: `${baseUrl}/contact` },
+  { name: "Home", href: resolvePath("/") },
+  { name: "Podcasts", href: resolvePath("/podcasts") },
+  { name: "Posts", href: resolvePath("/posts") },
+  { name: "Contact & PR", href: resolvePath("/contact") },
 ];
 
 const socialLinks = [
@@ -40,7 +39,7 @@ const currentYear = new Date().getFullYear();
       
       <!-- Brand & Tagline -->
       <div class="md:col-span-6 space-y-4">
-        <a href={`${baseUrl}/`} class="inline-block">
+        <a href={resolvePath("/")} class="inline-block">
           <h2 class="text-2xl font-black tracking-wider uppercase">
             <span class="text-porcelain">ZEALED</span>
             <span class="text-razzmatazz">FUJOSHI</span>
