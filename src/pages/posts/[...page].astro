@@ -60,7 +60,7 @@ const { page } = Astro.props;
       <!-- Pagination Navigation Controls -->
       <div class="flex items-center justify-between mt-16 pt-8 border-t border-white/10">
         {page.url.prev ? (
-          <a href={resolvePath(`/${page.url.prev}`)} class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium hover:bg-white/10 transition-colors">
+          <a href={resolvePath(`/`)+`${page.url.prev}`} class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium hover:bg-white/10 transition-colors">
             ← Previous
           </a>
         ) : (
@@ -72,7 +72,7 @@ const { page } = Astro.props;
         </span>
 
         {page.url.next ? (
-          <a href={resolvePath(`/${page.url.next}`)} class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium hover:bg-white/10 transition-colors">
+          <a href={resolvePath(`/`)+`${page.url.next}`} class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm font-medium hover:bg-white/10 transition-colors">
             Next →
           </a>
         ) : (
