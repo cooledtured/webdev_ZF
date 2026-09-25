@@ -15,10 +15,17 @@ import { Copy, Mail, Send } from "lucide-react";
         </h1>
       </div>
 
-      <div
-        class="p-8 rounded-3xl card-glass"
-      >
-        <form class="space-y-5" onsubmit="event.preventDefault()">
+      <div class="p-8 rounded-3xl card-glass">
+        <form 
+          action="https://formsubmit.co/zealedfujoshi@gmail.com" 
+          method="POST" 
+          class="space-y-5"
+        >
+          <!-- FormSubmit Options -->
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_subject" value="New Contact Inquiry - ZEALED FUJOSHI" />
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div class="space-y-2">
               <label
@@ -27,6 +34,8 @@ import { Copy, Mail, Send } from "lucide-react";
               >
               <input
                 type="text"
+                name="name"
+                required
                 placeholder="Your Name"
                 class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-porcelain focus:outline-none focus:border-razzmatazz transition-colors"
               />
@@ -38,6 +47,8 @@ import { Copy, Mail, Send } from "lucide-react";
               >
               <input
                 type="email"
+                name="email"
+                required
                 placeholder="email@example.com"
                 class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-porcelain focus:outline-none focus:border-razzmatazz transition-colors"
               />
@@ -50,13 +61,14 @@ import { Copy, Mail, Send } from "lucide-react";
               >Inquiry Type</label
             >
             <select
+              name="inquiry_type"
               class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-porcelain focus:outline-none focus:border-razzmatazz transition-colors appearance-none"
             >
-              <option>General Inquiry</option>
-              <option>Press Release</option>
-              <option>Event Invitation</option>
-              <option>Interview Request</option>
-              <option>Partnership</option>
+              <option value="General Inquiry">General Inquiry</option>
+              <option value="Press Release">Press Release</option>
+              <option value="Event Invitation">Event Invitation</option>
+              <option value="Interview Request">Interview Request</option>
+              <option value="Partnership">Partnership</option>
             </select>
           </div>
 
@@ -66,6 +78,8 @@ import { Copy, Mail, Send } from "lucide-react";
               >Message</label
             >
             <textarea
+              name="message"
+              required
               rows="4"
               placeholder="How can we help you?"
               class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-porcelain focus:outline-none focus:border-razzmatazz transition-colors"
